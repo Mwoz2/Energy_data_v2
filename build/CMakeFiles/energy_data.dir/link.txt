@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/energy_data.dir/main.c.o CMakeFiles/energy_data.dir/scraping.c.o CMakeFiles/energy_data.dir/client_node.c.o CMakeFiles/energy_data.dir/open62541.c.o CMakeFiles/energy_data.dir/csv_logger.c.o -o energy_data  -lpthread -lcurl -lcjson 

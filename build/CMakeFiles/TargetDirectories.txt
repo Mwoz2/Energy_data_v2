@@ -1,0 +1,3 @@
+/home/maciek1/Documents/Energy_data_v2/build/CMakeFiles/energy_data.dir
+/home/maciek1/Documents/Energy_data_v2/build/CMakeFiles/edit_cache.dir
+/home/maciek1/Documents/Energy_data_v2/build/CMakeFiles/rebuild_cache.dir

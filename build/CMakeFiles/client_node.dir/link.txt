@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/client_node.dir/main.c.o CMakeFiles/client_node.dir/scraping.c.o CMakeFiles/client_node.dir/client_node.c.o CMakeFiles/client_node.dir/open62541.c.o -o client_node  -lpthread -lcurl -lcjson 
