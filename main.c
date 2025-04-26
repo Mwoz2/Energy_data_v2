@@ -20,7 +20,7 @@ void *data_collector(void *arg) {
 
         log_data_to_csv(&shared_data);  // Zapis do pliku CSV
 
-        sem_post(&data_ready);  // Sygna? do wysy?ki danych
+        sem_post(&data_ready);  
         printf("? Dane pobrane i zapisane do CSV\n");
 
         sleep(15);  // Czekaj 15 sekund
@@ -30,14 +30,14 @@ void *data_collector(void *arg) {
 
 void *data_sender(void *arg) {
     while (1) {
-        sem_wait(&data_ready);      // Czekaj na nowe dane
-        send_data(&shared_data);    // Wy?lij dane do serwera OPC UA
+        sem_wait(&data_ready);    
+        send_data(&shared_data);    
     }
     return NULL;
 }
 
 int main() {
-    ensure_all_csv_headers(); // nowa wersja
+    ensure_all_csv_headers(); 
 
     pthread_t t1, t2;
     sem_init(&data_ready, 0, 0);
