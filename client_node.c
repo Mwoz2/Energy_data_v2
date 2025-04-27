@@ -16,12 +16,12 @@ static UA_Client* create_and_start_opc_ua_client(const char *server_url) {
 
     UA_StatusCode status = UA_Client_connect(client, server_url);
     if (status != UA_STATUSCODE_GOOD) {
-        log_error("? B??d po??czenia z serwerem OPC UA: %s\n", UA_StatusCode_name(status));
+        log_error("? Blad polaczenia z serwerem OPC UA: %s\n", UA_StatusCode_name(status));
         UA_Client_delete(client);
         return NULL;
     }
 
-    log_info("? Po??czono z serwerem OPC UA: %s\n", server_url);
+    log_info("? Polaczono z serwerem OPC UA: %s\n", server_url);
     return client;
 }
 
@@ -37,7 +37,7 @@ static void write_to_double_node(UA_Client *client, UA_UInt32 nodeIdNumeric, dou
 
     UA_StatusCode status = UA_Client_writeValueAttribute(client, UA_NODEID_NUMERIC(1, nodeIdNumeric), &valueVariant);
     if (status != UA_STATUSCODE_GOOD) {
-        log_error("? B??d zapisu warto?ci do NodeId %u: %s\n", nodeIdNumeric, UA_StatusCode_name(status));
+        log_error("Blad zapisu do NodeId %u: %s\n", nodeIdNumeric, UA_StatusCode_name(status));
     }
 }
 
