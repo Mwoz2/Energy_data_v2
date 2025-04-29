@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #include "open62541.h"
 #include "client_node.h"
@@ -16,12 +17,12 @@ static UA_Client* create_and_start_opc_ua_client(const char *server_url) {
 
     UA_StatusCode status = UA_Client_connect(client, server_url);
     if (status != UA_STATUSCODE_GOOD) {
-        log_error("? Blad polaczenia z serwerem OPC UA: %s\n", UA_StatusCode_name(status));
+        log_error("Blad polaczenia z serwerem OPC UA: %s\n", UA_StatusCode_name(status));
         UA_Client_delete(client);
         return NULL;
     }
 
-    log_info("? Polaczono z serwerem OPC UA: %s\n", server_url);
+    log_info("Polaczono z serwerem OPC UA: %s\n", server_url);
     return client;
 }
 
@@ -39,6 +40,21 @@ static void write_to_double_node(UA_Client *client, UA_UInt32 nodeIdNumeric, dou
     if (status != UA_STATUSCODE_GOOD) {
         log_error("Blad zapisu do NodeId %u: %s\n", nodeIdNumeric, UA_StatusCode_name(status));
     }
+}
+
+static void write_to_string_node(UA_Client *client, UA_UInt32 nodeIdNumeric, const char *text) {
+    UA_Variant value;
+    UA_Variant_init(&value);
+
+    UA_String uaString = UA_STRING_ALLOC(text);
+    UA_Variant_setScalar(&value, &uaString, &UA_TYPES[UA_TYPES_STRING]);
+
+    UA_StatusCode status = UA_Client_writeValueAttribute(client, UA_NODEID_NUMERIC(1, nodeIdNumeric), &value);
+
+if (status != UA_STATUSCODE_GOOD){
+    log_error("Blad wyslaniu czasu na serwer %u: %s\n", nodeIdNumeric, UA_StatusCode_name(status));
+}
+UA_String_clear(&uaString);
 }
 
 void send_data(SharedData *data) {
@@ -59,6 +75,11 @@ void send_data(SharedData *data) {
     write_to_double_node(client, 4011, data->exch_data.UA);
     write_to_double_node(client, 4012, data->exch_data.SE);
     write_to_double_node(client, 4013, data->freq_data.frequency);
+
+    char datetime_str[20];
+    time_t now = time(NULL);
+    strftime(datetime_str, sizeof(datetime_str), "%d/%m/%Y %H:%M", localtime(&now));
+    write_to_string_node(client, 4014, datetime_str);
 
     log_info("Dane wyslane do serwera OPC UA\n");
 
