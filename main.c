@@ -23,7 +23,7 @@ void *data_collector(void *arg) {
         sem_post(&data_ready);  
         printf("Dane pobrane i zapisane do CSV\n");
 
-        sleep(5);  // Czekaj 15 sekund
+        sleep(1800);  // Czekaj godzine
     }
     return NULL;
 }
