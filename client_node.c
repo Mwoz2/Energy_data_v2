@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <unistd.h>
 
 #include "open62541.h"
 #include "client_node.h"
@@ -10,6 +11,7 @@
 
 #define OPCUA_SERVER_URL "opc.tcp://192.168.192.26:4840" 
 #define LOG_FILE_PATH "energy_log.csv"
+
 
 static UA_Client* create_and_start_opc_ua_client(const char *server_url) {
     UA_Client *client = UA_Client_new();
@@ -52,7 +54,9 @@ static void write_to_string_node(UA_Client *client, UA_UInt32 nodeIdNumeric, con
     UA_StatusCode status = UA_Client_writeValueAttribute(client, UA_NODEID_NUMERIC(1, nodeIdNumeric), &value);
 
 if (status != UA_STATUSCODE_GOOD){
-    log_error("Blad wyslaniu czasu na serwer %u: %s\n", nodeIdNumeric, UA_StatusCode_name(status));
+    log_error("Blad wyslania czasu na serwer %u: %s\n", nodeIdNumeric, UA_StatusCode_name(status));
+    log_info("Restart programu za 5s\n");
+    exit(1);
 }
 UA_String_clear(&uaString);
 }
